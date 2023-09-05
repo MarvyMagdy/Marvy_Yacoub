@@ -1,0 +1,8 @@
+{
+    "name" : "Marvy",
+    "Email":"Marvymagdy111@gmail.com",
+    "password":"123456",
+    "gender" : "Female",
+    "productNames" : ["Blackberry","Samsung Note 8"],
+    "country" : "India"
+}
