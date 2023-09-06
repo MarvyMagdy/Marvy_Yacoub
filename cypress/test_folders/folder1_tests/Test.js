@@ -1,6 +1,7 @@
 /// <reference types="Cypress"/>
 import HomePage from "../pageObjects/HomePage";
 import ShopPage from "../pageObjects/ShopPage";
+import { Extract_Total, summation } from "./Utilities";
 
 describe('ProtoCommerceTests',function()
 {
@@ -17,21 +18,34 @@ describe('ProtoCommerceTests',function()
         cy.visit('https://rahulshettyacademy.com/angularpractice')
     })
 
-    it('HomeTests', function()
+    it('Validate empty name box message',function()
     {
         //Assert that error message of empty name box appears
         homePage.getNameBox().type(this.data.name)
         homePage.getNameBox().clear()
         homePage.getEmailBox().type(this.data.Email)
         homePage.getNameAlert().should('contain','Name is required')
+    })
 
+    it('Validate empty email box message',function()
+    {
         //Assert that error message of empty email box appears
         homePage.getEmailBox().clear()
         homePage.getNameBox().type(this.data.name)
         homePage.getEmailBoxAlert().should('contain','Email is required')
+    })
 
+    it('Validate Two-way Data Binding',function()
+    {
         //Assert that the name in the name box is the same in the Two-way Data Binding
+        homePage.getNameBox().type(this.data.name)
         homePage.getTwoWayDataBinding().should('have.value',this.data.name)
+    })
+
+    it('Validate alert of success message', function()
+    {
+        //Write Name
+        homePage.getNameBox().type(this.data.name)
 
         //Write Email
         homePage.getEmailBox().type(this.data.Email)
@@ -53,7 +67,7 @@ describe('ProtoCommerceTests',function()
 
     })
 
-    it('ShotTests', function()
+    it('ShopTests', function()
     {
         //Click on shop tab
         homePage.getShoptab().click() 
@@ -71,20 +85,13 @@ describe('ProtoCommerceTests',function()
         var sum = 0
         cy.get('tr td:nth-child(4) strong').each(($e1, index, $list) =>
         {
-            var amount = $e1.text()
-            var price = amount.split(" ")
-            price = price[1].trim()
-
-            sum = Number(sum) + Number(price)
-            cy.log('sum',sum)
+            sum = summation($e1,sum)
         })
 
         //Assert total is right
         cy.get('h3 strong').then(function(element)
         {
-            var amount = element.text()
-            var total = amount.split(" ")
-            total = total[1].trim()
+            var total = Extract_Total(element)
             expect(Number(total)).to.equal(Number(sum))
         })
         

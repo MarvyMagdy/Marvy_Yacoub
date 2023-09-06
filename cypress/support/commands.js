@@ -21,6 +21,7 @@ Cypress.Commands.add('selectProduct', (productName) =>
         }
     })
 })
+
 //
 //
 // -- This is a child command --
